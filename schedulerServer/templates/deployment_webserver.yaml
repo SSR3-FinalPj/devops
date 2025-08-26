@@ -53,7 +53,7 @@ spec:
               mountPath: /opt/airflow/dags
           envFrom:
             - secretRef:
-                name: api-service-secrets
+                name: {{ .Values.main.secrets.name }}
       volumes:
         - name: airflow-service-config-volume
           configMap:

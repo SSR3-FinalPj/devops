@@ -58,7 +58,7 @@ spec:
                   key: WEBSERVER_SECRET_KEY
           envFrom:
             - secretRef:
-                name: api-service-secrets
+                name: {{ .Values.main.secrets.name }}
       volumes:
         - name: dags-volume
           persistentVolumeClaim:
