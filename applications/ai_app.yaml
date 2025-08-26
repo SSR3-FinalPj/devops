@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: python-app
+  namespace: dev-system
+spec:
+  project: backend-services
+  destination:
+    namespace: dev-system
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/SSR3-FinalPj/devops.git
+    targetRevision: main          # 브랜치나 태그 지정 (예: main)
+    path: python_app              # Chart.yaml이 있는 디렉토리
+    helm:
+      valueFiles:
+        - values.yaml             # python-app 디렉토리 안의 values.yaml 사용
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

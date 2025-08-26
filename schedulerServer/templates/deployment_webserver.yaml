@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-service-webserver
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: airflow-service-webserver
+spec:
+  replicas: {{ .Values.main.replicaCount }}
+  selector:
+    matchLabels:
+      app: airflow-service-webserver
+  template:
+    metadata:
+      labels:
+        app: airflow-service-webserver
+    spec:
+      serviceAccountName: {{ .Valuesmain.main.serviceAccount.name }}
+      containers:
+        - name: webserver
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.main.resources | nindent 12 }}
+          ports:
+            - containerPort: {{ .Values.main.service.port }}
+          command: ["airflow", "webserver"]
+          env:
+            - name: PYTHONPATH
+              value: /opt/airflow
+            - name: AIRFLOW__CORE__EXECUTOR
+              value: KubernetesExecutor
+            - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+              value: postgresql+psycopg2://airflow:airflow@postgres-service/airflow
+            - name: AIRFLOW__CORE__FERNET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.main.secrets.name }}
+                  key: FERNET_KEY
+            - name: AIRFLOW__WEBSERVER__SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.main.secrets.name }}
+                  key: WEBSERVER_SECRET_KEY
+          volumeMounts:
+            - name: airflow-service-config-volume
+              mountPath: /opt/airflow/airflow.cfg
+              subPath: airflow.cfg
+            - name: airflow-service-config-volume
+              mountPath: /opt/airflow/pod_template.yaml
+              subPath: pod_template.yaml
+            - name: dags-volume
+              mountPath: /opt/airflow/dags
+          envFrom:
+            - secretRef:
+                name: api-service-secrets
+      volumes:
+        - name: airflow-service-config-volume
+          configMap:
+            name: {{ .Values.main.configMap.name }}
+        - name: dags-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.main.persistence.claimName }}

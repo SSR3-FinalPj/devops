@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: token-updater
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: token-updater
+spec:
+  replicas: {{ .Values.token.replicaCount }}
+  selector:
+    matchLabels:
+      app: token-updater
+  template:
+    metadata:
+      labels:
+        app: token-updater
+    spec:
+      serviceAccountName: {{ .Values.token.serviceAccount.name }}
+      containers:
+        - name: token-updater
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.token.resources | nindent 12 }}
+          command:
+            - "python"
+            - "-u"
+            - "/opt/airflow/token_updater.py"
+          volumeMounts:
+            - name: dags-volume
+              mountPath: /opt/airflow/dags
+          envFrom:
+            - secretRef:
+                name: api-service-secrets
+      volumes:
+        - name: dags-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.token.persistence.claimName }}

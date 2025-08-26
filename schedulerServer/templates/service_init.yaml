@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: airflow-service-init
+  namespace: {{ .Values.namespace }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: {{ .Values.init.serviceAccount.name }}
+      containers:
+        - name: airflow-init
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "sh", "-c" ]
+          args:
+            - |
+              set -ex
+              echo "--- Preparing DAGs folder ---"
+              echo "Current user:"
+              whoami
+              echo "Listing /opt/airflow contents and permissions:"
+              ls -la /opt/airflow
+              echo "Listing /opt/airflow/dags_src contents and permissions:"
+              ls -la /opt/airflow/dags_src
+              echo "Listing /opt/airflow/dags contents before copy:"
+              ls -la /opt/airflow/dags
+              echo "Copying static DAGs from /opt/airflow/dags_src to /opt/airflow/dags..."
+              cp -v /opt/airflow/dags_src/*.py /opt/airflow/dags/
+              echo "--- Static DAGs copied. Listing /opt/airflow/dags contents after copy: ---"
+              ls -la /opt/airflow/dags
+              echo "Generating dynamic DAGs..."
+              python3 /opt/airflow/dag_factory.py
+              echo "--- Dynamic DAGs generated. ---"
+              echo "Initializing Airflow DB..."
+              airflow db init
+              echo "--- DB Initialized. ---"
+              echo "Creating admin user..."
+              airflow users create -u service_admin -p AdminPass123 -f ServiceAdmin -l User -r Admin -e service_admin@example.com
+              echo "--- Init script finished. ---"
+          volumeMounts:
+            - name: dags-volume
+              mountPath: /opt/airflow/dags
+          env:
+            - name: AIRFLOW__CORE__EXECUTOR
+              value: SequentialExecutor
+            - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+              value: postgresql+psycopg2://airflow:airflow@postgres-service/airflow
+            - name: AIRFLOW__CORE__FERNET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.init.secrets.name }}
+                  key: FERNET_KEY
+            - name: AIRFLOW__WEBSERVER__SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.init.secrets.name }}
+                  key: WEBSERVER_SECRET_KEY
+          envFrom:
+            - secretRef:
+                name: api-service-secrets
+      volumes:
+        - name: dags-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.init.persistence.claimName }}
