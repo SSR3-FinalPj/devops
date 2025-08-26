@@ -45,7 +45,7 @@ spec:
             - name: AIRFLOW__CORE__EXECUTOR
               value: SequentialExecutor
             - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
-              value: postgresql+psycopg2://airflow:airflow@postgres-service/airflow
+              value: postgresql+psycopg2://airflow:airflow@postgres/airflow
             # - name: AIRFLOW__CORE__FERNET_KEY
             #   valueFrom:
             #     secretKeyRef:
