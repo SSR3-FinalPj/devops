@@ -1,8 +1,8 @@
 namespace: dev-system
-#805400277714.dkr.ecr.us-east-2.amazonaws.com/airflow
+
 image:
-  repository: lovetk102/my-airflow
-  tag: "latest"          # 기본값 (CI/CD에서 override)
+  repository: 805400277714.dkr.ecr.us-east-2.amazonaws.com/airflow
+  tag: "1.0.0"          # 기본값 (CI/CD에서 override)
   pullPolicy: IfNotPresent
 
 main:
