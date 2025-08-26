@@ -51,9 +51,6 @@ spec:
               subPath: pod_template.yaml
             - name: dags-volume
               mountPath: /opt/airflow/dags
-          envFrom:
-            - secretRef:
-                name: {{ .Values.main.secrets.name }}
       volumes:
         - name: airflow-service-config-volume
           configMap:

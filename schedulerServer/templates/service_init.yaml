@@ -56,9 +56,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.init.secrets.name }}
                   key: WEBSERVER_SECRET_KEY
-          envFrom:
-            - secretRef:
-                name: {{ .Values.main.secrets.name }}
       volumes:
         - name: dags-volume
           persistentVolumeClaim:
