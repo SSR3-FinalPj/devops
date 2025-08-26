@@ -1,5 +1,5 @@
 apiVersion: v2
-name: airflow-service-webserver
+name: scheduler-service
 description: Helm chart for schedulerServer deployment
 type: application
 version: 0.1.0
