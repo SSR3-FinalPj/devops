@@ -15,7 +15,7 @@ spec:
       labels:
         app: airflow-service-webserver
     spec:
-      serviceAccountName: {{ .Valuesmain.main.serviceAccount.name }}
+      serviceAccountName: {{ .Values.main.serviceAccount.name }}
       containers:
         - name: webserver
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
