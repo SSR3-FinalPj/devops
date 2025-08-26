@@ -46,16 +46,19 @@ spec:
               value: SequentialExecutor
             - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
               value: postgresql+psycopg2://airflow:airflow@postgres-service/airflow
-            - name: AIRFLOW__CORE__FERNET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.init.secrets.name }}
-                  key: FERNET_KEY
-            - name: AIRFLOW__WEBSERVER__SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.init.secrets.name }}
-                  key: WEBSERVER_SECRET_KEY
+            # - name: AIRFLOW__CORE__FERNET_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: {{ .Values.init.secrets.name }}
+            #       key: FERNET_KEY
+            # - name: AIRFLOW__WEBSERVER__SECRET_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: {{ .Values.init.secrets.name }}
+            #       key: WEBSERVER_SECRET_KEY
+          envFrom:
+            - secretRef:
+                name: {{ .Values.main.secrets.name }}
       volumes:
         - name: dags-volume
           persistentVolumeClaim:
