@@ -10,7 +10,8 @@ spec:
   - name: base
     image: {{ .Values.image.repository }}
     imagePullPolicy: Always
-    resources: {{ .Values.main.resources }}
+    resources: 
+      {{- toYaml .Values.main.resources | nindent 12 }}
     env:
     - name: AIRFLOW__CORE__DAGS_FOLDER
       value: /opt/airflow/generated_dags
