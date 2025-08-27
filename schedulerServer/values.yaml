@@ -52,3 +52,4 @@ token:
       memory: "1Gi"
   persistence:
     claimName: dags-pvc
+
