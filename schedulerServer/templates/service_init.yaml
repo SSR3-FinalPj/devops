@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: airflow-service-init
+  name: "airflow-service-init-{{ .Release.Name }}-{{ now | unixEpoch }}"
   namespace: {{ .Values.namespace }}
 spec:
   template:
