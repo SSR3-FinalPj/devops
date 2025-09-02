@@ -5,6 +5,9 @@ image:
   tag: "1.0.0"    # 기본값, CI/CD에서 ai_value.yaml로 override
   pullPolicy: IfNotPresent
 
+secrets:
+  name: backend-secrets
+
 service:
   type: ClusterIP
   port: 8080
