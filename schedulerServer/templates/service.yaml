@@ -7,7 +7,7 @@ metadata:
 spec:
   type: {{ .Values.main.service.type }}
   selector:
-    app: {{ .Chart.Name }}
+    app: airflow-service-webserver
   ports:
     - port: {{ .Values.main.service.port }}
       targetPort: {{ .Values.main.service.targetPort }}

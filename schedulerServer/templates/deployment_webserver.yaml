@@ -4,7 +4,7 @@ metadata:
   name: airflow-service-webserver
   namespace: {{ .Values.namespace }}
   labels:
-    app: airflow-service-webserver
+    app: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.main.replicaCount }}
   selector:

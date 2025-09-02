@@ -9,8 +9,8 @@ main:
     name: airflow-service-sa
   service:
     type: ClusterIP
-    port: 8080
-    targetPort: 80
+    port: 80
+    targetPort: 8080
   resources:
     requests:
       cpu: "500m"
