@@ -4,7 +4,7 @@ metadata:
   name: bridge
   namespace: dev-system
 spec:
-  project: bridge-service
+  project: backend-service
   destination:
     namespace: dev-system
     server: https://kubernetes.default.svc

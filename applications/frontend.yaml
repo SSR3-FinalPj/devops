@@ -4,7 +4,7 @@ metadata:
   name: frontend
   namespace: dev-system
 spec:
-  project: frontend-service
+  project: backend-service
   destination:
     namespace: dev-system
     server: https://kubernetes.default.svc
