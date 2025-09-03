@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: frontend
+  namespace: dev-system
+spec:
+  project: frontend-service
+  destination:
+    namespace: dev-system
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/SSR3-FinalPj/devops.git
+    targetRevision: main          # 브랜치나 태그 지정 (예: main)
+    path: frontend              # Chart.yaml이 있는 디렉토리
+    helm:
+      valueFiles:
+        - values.yaml             
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
