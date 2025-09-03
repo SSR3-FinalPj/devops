@@ -9,5 +9,5 @@ spec:
   selector:
     app: {{ .Chart.Name }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: 80
       targetPort: {{ .Values.service.port }}
