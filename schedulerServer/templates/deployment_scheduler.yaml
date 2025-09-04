@@ -32,6 +32,8 @@ spec:
               value: KubernetesExecutor
             - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
               value: postgresql+psycopg2://airflow:airflow@postgres/airflow
+            - name: AIRFLOW__KUBERNETES__NAMESPACE
+              value: dev-system
             # - name: AIRFLOW__CORE__FERNET_KEY
             #   valueFrom:
             #     secretKeyRef:
