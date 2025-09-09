@@ -67,10 +67,10 @@ data:
     load_examples = False
     [kubernetes]
     worker_container_repository = 805400277714.dkr.ecr.us-east-2.amazonaws.com/airflow
-    worker_container_tag = latest
+    worker_container_tag = {{ .Values.image.tag }}
     pod_template_file = /opt/airflow/pod_template.yaml
     [kubernetes_executor]
     delete_worker_pods = True
     worker_container_repository = 805400277714.dkr.ecr.us-east-2.amazonaws.com/airflow
-    worker_container_tag = latest
+    worker_container_tag = {{ .Values.image.tag }}
     pod_template_file = /opt/airflow/pod_template.yaml
