@@ -14,7 +14,7 @@ data:
       restartPolicy: Never
       containers:
       - name: base
-        image: lovetk102/my-airflow:latest
+        image: 805400277714.dkr.ecr.us-east-2.amazonaws.com/airflow:latest
         imagePullPolicy: Always
         resources:
           requests:
@@ -50,21 +50,10 @@ data:
             secretKeyRef:
               name: api-service-secrets
               key: REDDIT_CLIENT_SECRET
-        - name: REDDIT_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: api-service-secrets
-              key: REDDIT_USERNAME
-        - name: REDDIT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: api-service-secrets
-              key: REDDIT_PASSWORD
-        - name: REDDIT_USER_AGENT
-          valueFrom:
-            secretKeyRef:
-              name: api-service-secrets
-              key: REDDIT_USER_AGENT
+        envFrom:
+          - secretRef:
+              name: {{ .Values.main.secrets.name }}
+
         volumeMounts:
           - name: dags-volume
             mountPath: /opt/airflow/dags
@@ -77,11 +66,11 @@ data:
     dags_folder = /opt/airflow/dags
     load_examples = False
     [kubernetes]
-    worker_container_repository = lovetk102/my-airflow
+    worker_container_repository = 805400277714.dkr.ecr.us-east-2.amazonaws.com/airflow:latest
     worker_container_tag = latest
     pod_template_file = /opt/airflow/pod_template.yaml
     [kubernetes_executor]
     delete_worker_pods = True
-    worker_container_repository = lovetk102/my-airflow
+    worker_container_repository = 805400277714.dkr.ecr.us-east-2.amazonaws.com/airflow:latest
     worker_container_tag = latest
     pod_template_file = /opt/airflow/pod_template.yaml
