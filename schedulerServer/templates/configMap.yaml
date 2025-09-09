@@ -26,30 +26,10 @@ data:
         env:
         - name: AIRFLOW__CORE__DAGS_FOLDER
           value: /opt/airflow/dags
-        - name: SEOUL_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: api-service-secrets
-              key: SEOUL_API_KEY
         - name: PYTHONPATH
           value: /opt/airflow
         - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@postgres-service/airflow
-        - name: YOUTUBE_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: api-service-secrets
-              key: YOUTUBE_API_KEY
-        - name: REDDIT_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: api-service-secrets
-              key: REDDIT_CLIENT_ID
-        - name: REDDIT_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: api-service-secrets
-              key: REDDIT_CLIENT_SECRET
         envFrom:
           - secretRef:
               name: {{ .Values.main.secrets.name }}
