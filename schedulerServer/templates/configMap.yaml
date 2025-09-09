@@ -32,7 +32,7 @@ data:
           value: postgresql+psycopg2://airflow:airflow@postgres-service/airflow
         envFrom:
           - secretRef:
-              name: {{ .Values.main.secrets.name }}
+              name: airflow-service-secrets
 
         volumeMounts:
           - name: dags-volume
