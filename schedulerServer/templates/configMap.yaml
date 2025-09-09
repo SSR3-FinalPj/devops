@@ -29,7 +29,7 @@ data:
         - name: PYTHONPATH
           value: /opt/airflow
         - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
-          value: postgresql+psycopg2://airflow:airflow@postgres-service/airflow
+          value: postgresql+psycopg2://airflow:airflow@postgres/airflow
         envFrom:
           - secretRef:
               name: airflow-service-secrets
