@@ -30,6 +30,8 @@ data:
           value: /opt/airflow
         - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@postgres/airflow
+        - name: TZ
+          value: Asia/Seoul
         envFrom:
           - secretRef:
               name: airflow-service-secrets
