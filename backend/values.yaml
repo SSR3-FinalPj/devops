@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: 805400277714.dkr.ecr.us-east-2.amazonaws.com/backend
-  tag: 1.1 # 기본값, CI/CD에서 ai_value.yaml로 override
+  tag: 1.1.1 # 기본값, CI/CD에서 ai_value.yaml로 override
   pullPolicy: IfNotPresent
 secrets:
   name: backend-secrets
